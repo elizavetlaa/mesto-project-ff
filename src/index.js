@@ -1,39 +1,53 @@
-import './pages/index.css';
-import {initialCards} from './cards.js' 
+import "./pages/index.css";
+import { initialCards } from "./cards.js";
+import { createPost, deletePost, likePost, prevewPost } from "./blocks/components/card.js";
+import { closePopup, handleEditFormSubmit, handleEditPopupOpen, handleAddPopupOpen } from "./blocks/components/modal.js";
+import {
+  editPopupElement,
+  profileEditButton,
+  popupCloseButton,
+  editForm,
+  cardAddButton,
+  addForm,
+  cardContainer,
+  imageDescriptionInput,
+  imageUrlInput,
+  addPopupElement,
+} from "./blocks/components/constants.js";
 
-// @todo: Темплейт карточки
-const cardTemplate = document.querySelector("#card-template").content;
-
-// @todo: DOM узлы
-const cardContainer = document.querySelector(".places__list");
-
-// @todo: Функция создания карточки
-function createPost(card, handlePostDelete) {
-    const postElement = cardTemplate.querySelector(".card").cloneNode(true);
-    const postImage = postElement.querySelector(".card__image");
-    const postTitle = postElement.querySelector(".card__title");
-    const postDeleteButton = postElement.querySelector(".card__delete-button");
-
-    postImage.src = card.link;
-    postImage.alt = card.name;
-    postTitle.textContent = card.name;
-
-    postDeleteButton.addEventListener("click", handlePostDelete);
-
-    return postElement;
-}
-// @todo: Функция удаления карточки
-function deletePost(evt) {
-    evt.target.closest(".card").remove();
-}
-
-// @todo: Вывести карточки на страницу
 function renderInitialCards(cardsArr) {
   cardsArr.forEach(card => {
-    const newPost = createPost(card, deletePost);
+    const newPost = createPost(card, deletePost, likePost, prevewPost);
     cardContainer.append(newPost);
   });
-
 }
+
+function handleAddFormSubmit(evt) {
+  evt.preventDefault();
+  const newPost = createPost({ name: imageDescriptionInput.value, link: imageUrlInput.value }, deletePost, likePost, prevewPost);
+  closePopup(addPopupElement);
+  cardContainer.prepend(newPost);
+  evt.target.reset();
+}
+
+profileEditButton.addEventListener("click", () => {
+  handleEditPopupOpen();
+});
+
+popupCloseButton.addEventListener("click", () => {
+  closePopup(editPopupElement);
+});
+
+editForm.addEventListener("submit", evt => {
+  handleEditFormSubmit(evt);
+});
+
+cardAddButton.addEventListener("click", () => {
+  handleAddPopupOpen();
+});
+
+addForm.addEventListener("submit", evt => {
+  handleAddFormSubmit(evt);
+});
 
 renderInitialCards(initialCards);
