@@ -1,7 +1,5 @@
 import { cardTemplate } from "./constants";
-import { openPopup } from "./modal";
 
-// @todo: Функция создания карточки
 export function createPost(card, handlePostDelete, handlePostLike, handlePostPreview) {
   const postElement = cardTemplate.querySelector(".card").cloneNode(true);
   const postImage = postElement.querySelector(".card__image");
@@ -19,23 +17,11 @@ export function createPost(card, handlePostDelete, handlePostLike, handlePostPre
 
   return postElement;
 }
-// @todo: Функция удаления карточки
+
 export function deletePost(evt) {
   evt.target.closest(".card").remove();
 }
 
 export function likePost(evt) {
   evt.target.classList.toggle("card__like-button_is-active");
-}
-
-export function prevewPost(evt) {
-  const popupImagePreview = document.querySelector(".popup_type_image");
-  const popupImage = popupImagePreview.querySelector(".popup__image");
-  const popupImageCaption = popupImagePreview.querySelector(".popup__caption");
-
-  popupImage.src = evt.target.src;
-  popupImage.alt = evt.target.alt;
-  popupImageCaption.textContent = evt.target.alt;
-
-  openPopup(popupImagePreview);
 }
