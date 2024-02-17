@@ -1,7 +1,7 @@
 import "./pages/index.css";
 import { initialCards } from "./cards.js";
 import { createPost, deletePost, likePost } from "./components/card.js";
-import { seachPopupIsOpen, handlePopupClick, openPopup, closePopup } from "./components/modal.js";
+import { seachPopupIsOpen, openPopup, closePopup } from "./components/modal.js";
 import {
   profileTitle,
   profileDescription,
