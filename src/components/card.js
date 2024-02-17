@@ -1,4 +1,4 @@
-import { cardTemplate } from "./constants";
+const cardTemplate = document.querySelector("#card-template").content;
 
 export function createPost(card, handlePostDelete, handlePostLike, handlePostPreview) {
   const postElement = cardTemplate.querySelector(".card").cloneNode(true);

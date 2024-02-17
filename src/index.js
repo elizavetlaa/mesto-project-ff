@@ -1,14 +1,14 @@
 import "./pages/index.css";
 import { initialCards } from "./cards.js";
 import { createPost, deletePost, likePost } from "./components/card.js";
-import { openPopup, closePopup } from "./components/modal.js";
+import { seachPopupIsOpen, handlePopupClick, openPopup, closePopup } from "./components/modal.js";
 import {
   profileTitle,
   profileDescription,
   nameInput,
   editPopupElement,
   profileEditButton,
-  popupCloseButton,
+  popupCloseButtons,
   editForm,
   cardAddButton,
   addForm,
@@ -67,16 +67,18 @@ profileEditButton.addEventListener("click", () => {
   handleEditPopupOpen();
 });
 
-popupCloseButton.addEventListener("click", () => {
-  closePopup(editPopupElement);
-});
-
-editForm.addEventListener("submit", evt => {
-  handleEditFormSubmit(evt);
+popupCloseButtons.forEach(function (btn) {
+  btn.addEventListener("click", function () {
+    closePopup(seachPopupIsOpen());
+  });
 });
 
 cardAddButton.addEventListener("click", () => {
   handleAddPopupOpen();
+});
+
+editForm.addEventListener("submit", evt => {
+  handleEditFormSubmit(evt);
 });
 
 addForm.addEventListener("submit", evt => {
