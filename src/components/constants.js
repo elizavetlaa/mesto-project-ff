@@ -3,7 +3,6 @@ const cardContainer = document.querySelector(".places__list");
 // модальные окна
 const editPopupElement = document.querySelector(".popup_type_edit");
 const addPopupElement = document.querySelector(".popup_type_new-card");
-const popupCloseButtons = document.querySelectorAll(".popup__close");
 
 // редактирование профиля
 const profileTitle = document.querySelector(".profile__title");
@@ -23,7 +22,6 @@ export {
   cardContainer,
   editPopupElement,
   addPopupElement,
-  popupCloseButtons,
   profileTitle,
   profileDescription,
   nameInput,
