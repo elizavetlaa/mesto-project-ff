@@ -1,13 +1,14 @@
 import "./pages/index.css";
 import { initialCards } from "./cards.js";
 import { createPost, deletePost, likePost } from "./components/card.js";
-import { openPopup, closePopup } from "./components/modal.js";
+import { handlePopupClick, openPopup, closePopup } from "./components/modal.js";
 import {
   profileTitle,
   profileDescription,
   nameInput,
   editPopupElement,
   profileEditButton,
+  popupsArray,
   editForm,
   cardAddButton,
   addForm,
@@ -66,13 +67,8 @@ profileEditButton.addEventListener("click", () => {
   handleEditPopupOpen();
 });
 
-document.addEventListener("click", function (event) {
-  if (event.target.classList.contains("popup__close")) {
-    const popup = event.target.closest(".popup");
-    if (popup) {
-      closePopup(popup);
-    }
-  }
+popupsArray.forEach((popup) => {
+  popup.addEventListener("click", handlePopupClick);
 });
 
 cardAddButton.addEventListener("click", () => {
@@ -85,6 +81,15 @@ editForm.addEventListener("submit", evt => {
 
 addForm.addEventListener("submit", evt => {
   handleAddFormSubmit(evt);
+});
+
+document.addEventListener("keydown", evt => {
+  if (evt.key === "Escape") {
+    const openedPopup = document.querySelector(".popup_is-opened");
+    if (openedPopup) {
+      closePopup(openedPopup);
+    }
+  }
 });
 
 renderInitialCards(initialCards);
