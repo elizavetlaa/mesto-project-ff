@@ -19,15 +19,24 @@ import {
   addPopupElement,
 } from "./components/constants.js";
 
+import {validationSettings, enableValidation, clearValidation}  from "./components/validation.js";
+import {getInitialPosts, getPersonInfo, addPost} from "./components/api.js";
+
 const popupImagePreview = document.querySelector(".popup_type_image");
 const popupImage = popupImagePreview.querySelector(".popup__image");
 const popupImageCaption = popupImagePreview.querySelector(".popup__caption");
 
 function renderInitialCards(cardsArr) {
-  cardsArr.forEach(card => {
-    const newPost = createPost(card, deletePost, likePost, prevewPost);
-    cardContainer.append(newPost);
-  });
+  Promise.all([getInitialPosts(), getPersonInfo()])
+    .then(([cards, personalInfo]) => {
+      cards.forEach(card => {
+        const newPost = createPost(card, personalInfo._id, deletePost, likePost, prevewPost);
+        cardContainer.append(newPost);
+      })
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
 
 function prevewPost(evt) {
@@ -40,16 +49,24 @@ function prevewPost(evt) {
 
 function handleAddFormSubmit(evt) {
   evt.preventDefault();
-  const newPost = createPost({ name: imageDescriptionInput.value, link: imageUrlInput.value }, deletePost, likePost, prevewPost);
-  closePopup(addPopupElement);
-  cardContainer.prepend(newPost);
-  evt.target.reset();
+
+  addPost(imageDescriptionInput.value, imageUrlInput.value)
+    .then((newPost) => {
+      const createdPost = createPost(card, newPost.owner._id, deletePost, likePost, prevewPost);
+      cardContainer.append(createdPost);
+      closePopup(addPopupElement);
+      evt.target.reset();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
 
 function handleEditPopupOpen() {
   openPopup(editPopupElement);
   nameInput.value = profileTitle.textContent;
   descriptionInput.value = profileDescription.textContent;
+  clearValidation(editPopupElement, validationSettings)
 }
 
 function handleEditFormSubmit(evt) {
@@ -82,5 +99,7 @@ editForm.addEventListener("submit", evt => {
 addForm.addEventListener("submit", evt => {
   handleAddFormSubmit(evt);
 });
+
+enableValidation(validationSettings); 
 
 renderInitialCards(initialCards);

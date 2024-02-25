@@ -49,19 +49,32 @@
           <h3 class="popup__title">Редактировать профиль</h3>
           <form
             class="popup__form"
-            name="edit-profile">
+            name="edit-profile"
+            novalidate>
             <input
+              id="edit-name-input"
               type="text"
               name="name"
               class="popup__input popup__input_type_name"
               placeholder="Имя"
+              minlength="2"
+              maxlength="40"
+              pattern="[a-zA-Zа-яА-ЯёЁ\- ]+"
+              data-error-message = "Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
               required />
+            <span class="edit-name-input-error form__input_error">Необходимо заполнить данное поле</span>
             <input
+              id="edit-description-input"
               type="text"
               name="description"
               class="popup__input popup__input_type_description"
               placeholder="Занятие"
+              minlength="2"
+              maxlength="200"
+              pattern="[a-zA-Zа-яА-ЯёЁ\- ]+"
+              data-error-message = "Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
               required />
+            <span class="edit-description-input-error form__input_error">Необходимо заполнить данное поле</span>
             <button
               type="submit"
               class="button popup__button">
@@ -78,19 +91,28 @@
           <h3 class="popup__title">Новое место</h3>
           <form
             class="popup__form"
-            name="new-place">
+            name="new-place"
+            novalidate>
             <input
+              id="add-place-name-input"
               type="text"
               name="place-name"
               class="popup__input popup__input_type_card-name"
               placeholder="Название"
+              minlength="2"
+              maxlength="30"
+              pattern="[a-zA-Zа-яА-ЯёЁ\- ]+"
+              data-error-message = "Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
               required />
+              <span class="add-place-name-input-error form__input_error">Необходимо заполнить данное поле</span>
             <input
+              id="add-url-input"
               type="url"
               name="link"
               class="popup__input popup__input_type_url"
               placeholder="Ссылка на картинку"
               required />
+            <span class="add-url-input-error form__input_error">Необходимо заполнить данное поле</span>
             <button
               type="submit"
               class="button popup__button">
