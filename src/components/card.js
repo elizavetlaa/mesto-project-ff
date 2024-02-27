@@ -11,6 +11,8 @@ export function createPost(card, personId, handlePostDelete, handlePostLike, han
   postImage.alt = card.name;
   postTitle.textContent = card.name;
 
+  postElement.id = card._id;
+
   if (card.likes.some((like) => like._id === personId)) {
     postLikeButton.classList.toggle("card__like-button_is-active");
   }
@@ -23,10 +25,6 @@ export function createPost(card, personId, handlePostDelete, handlePostLike, han
   postImage.addEventListener("click", handlePostPreview);
 
   return postElement;
-}
-
-export function deletePost(evt) {
-  evt.target.closest(".card").remove();
 }
 
 export function likePost(evt) {

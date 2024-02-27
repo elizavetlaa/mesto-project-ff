@@ -1,15 +1,15 @@
-export function handlePopupClick(evt) {
-  if (evt.target.classList.contains("popup") || evt.target.classList.contains("popup__close")) {
-    closePopup(evt.currentTarget);
-  }
-}
-
 function handdlePopupEsc(evt) {
   if (evt.key === "Escape") {
     const openedPopup = document.querySelector(".popup_is-opened");
     if (openedPopup) {
       closePopup(openedPopup);
     }
+  }
+}
+
+export function handlePopupClick(evt) {
+  if (evt.target.classList.contains("popup") || evt.target.classList.contains("popup__close")) {
+    closePopup(evt.currentTarget);
   }
 }
 

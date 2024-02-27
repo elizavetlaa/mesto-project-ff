@@ -1,6 +1,5 @@
 import "./pages/index.css";
-import { initialCards } from "./cards.js";
-import { createPost, deletePost, likePost } from "./components/card.js";
+import { createPost, likePost } from "./components/card.js";
 import { handlePopupClick, openPopup, closePopup } from "./components/modal.js";
 import {
   profileTitle,
@@ -20,23 +19,28 @@ import {
 } from "./components/constants.js";
 
 import {validationSettings, enableValidation, clearValidation}  from "./components/validation.js";
-import {getInitialPosts, getPersonInfo, addPost} from "./components/api.js";
+import {getInitialPosts, getPersonInfo, addPost, deletePost, editPersonInfo} from "./components/api.js";
 
 const popupImagePreview = document.querySelector(".popup_type_image");
 const popupImage = popupImagePreview.querySelector(".popup__image");
 const popupImageCaption = popupImagePreview.querySelector(".popup__caption");
 
-function renderInitialCards(cardsArr) {
+function renderInitialCards() {
   Promise.all([getInitialPosts(), getPersonInfo()])
     .then(([cards, personalInfo]) => {
       cards.forEach(card => {
-        const newPost = createPost(card, personalInfo._id, deletePost, likePost, prevewPost);
+        const newPost = createPost(card, personalInfo._id, deletePostHandler, likePost, prevewPost);
         cardContainer.append(newPost);
       })
     })
     .catch((err) => {
       console.log(err);
     });
+}
+
+function deletePostHandler(evt) {
+  deletePost(evt.target.closest(".card").id);
+  evt.target.closest(".card").remove();
 }
 
 function prevewPost(evt) {
@@ -71,9 +75,16 @@ function handleEditPopupOpen() {
 
 function handleEditFormSubmit(evt) {
   evt.preventDefault();
-  profileTitle.textContent = nameInput.value;
-  profileDescription.textContent = descriptionInput.value;
-  closePopup(editPopupElement);
+
+  editPersonInfo(nameInput.value, descriptionInput.value)
+    .then((newPersonInfo) => {
+      profileTitle.textContent = newPersonInfo.name;
+      profileDescription.textContent = newPersonInfo.about;
+      closePopup(editPopupElement);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
 
 function handleAddPopupOpen() {
@@ -100,6 +111,15 @@ addForm.addEventListener("submit", evt => {
   handleAddFormSubmit(evt);
 });
 
-enableValidation(validationSettings); 
+enableValidation(validationSettings);
 
-renderInitialCards(initialCards);
+getPersonInfo()
+  .then((personalInfo) => {
+    profileTitle.textContent = personalInfo.name;
+    profileDescription.textContent = personalInfo.about;
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
+renderInitialCards();
