@@ -9,6 +9,11 @@
   padding: 34px 36px;
 }
 
+
+.popup_content_new-avatar {
+  min-height: auto;
+}
+
 @media screen and (max-width: 568px) {
   .popup__content {
     width: 100%;

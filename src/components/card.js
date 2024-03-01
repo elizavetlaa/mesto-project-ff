@@ -6,6 +6,7 @@ export function createPost(card, personId, handlePostDelete, handlePostLike, han
   const postTitle = postElement.querySelector(".card__title");
   const postDeleteButton = postElement.querySelector(".card__delete-button");
   const postLikeButton = postElement.querySelector(".card__like-button");
+  const postLikeCount = postElement.querySelector(".card__like-count");
 
   postImage.src = card.link;
   postImage.alt = card.name;
@@ -19,6 +20,7 @@ export function createPost(card, personId, handlePostDelete, handlePostLike, han
   if(card.owner._id === personId) {
     postDeleteButton.classList.toggle("card__delete-button-visible")
   }
+  postLikeCount.textContent = card.likes.length;
 
   postDeleteButton.addEventListener("click", handlePostDelete);
   postLikeButton.addEventListener("click", handlePostLike);

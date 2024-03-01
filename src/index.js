@@ -19,7 +19,7 @@ import {
 } from "./components/constants.js";
 
 import {validationSettings, enableValidation, clearValidation}  from "./components/validation.js";
-import {getInitialPosts, getPersonInfo, addPost, deletePost, editPersonInfo} from "./components/api.js";
+import {getInitialPosts, getPersonInfo, addPost, deletePost, editPersonInfo, addLike, deleteLike} from "./components/api.js";
 
 const popupImagePreview = document.querySelector(".popup_type_image");
 const popupImage = popupImagePreview.querySelector(".popup__image");
@@ -29,7 +29,7 @@ function renderInitialCards() {
   Promise.all([getInitialPosts(), getPersonInfo()])
     .then(([cards, personalInfo]) => {
       cards.forEach(card => {
-        const newPost = createPost(card, personalInfo._id, deletePostHandler, likePost, prevewPost);
+        const newPost = createPost(card, personalInfo._id, deletePostHandler, likePostHandler, prevewPost);
         cardContainer.append(newPost);
       })
     })
@@ -43,6 +43,27 @@ function deletePostHandler(evt) {
   evt.target.closest(".card").remove();
 }
 
+function likePostHandler(evt) {
+  if (evt.target.classList.contains("card__like-button_is-active")) {
+    deleteLike(evt.target.closest(".card").id)
+    .then((card) => {
+      evt.target.closest(".card").querySelector(".card__like-count").textContent = card.likes.length
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  } else {
+    addLike(evt.target.closest(".card").id)
+    .then((card) => {
+      evt.target.closest(".card").querySelector(".card__like-count").textContent = card.likes.length
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }
+  evt.target.classList.toggle("card__like-button_is-active");
+}
+
 function prevewPost(evt) {
   popupImage.src = evt.target.src;
   popupImage.alt = evt.target.alt;
@@ -51,13 +72,17 @@ function prevewPost(evt) {
   openPopup(popupImagePreview);
 }
 
+function handleAddPopupOpen() {
+  openPopup(addPopupElement);
+}
+
 function handleAddFormSubmit(evt) {
   evt.preventDefault();
 
   addPost(imageDescriptionInput.value, imageUrlInput.value)
     .then((newPost) => {
-      const createdPost = createPost(card, newPost.owner._id, deletePost, likePost, prevewPost);
-      cardContainer.append(createdPost);
+      const createdPost = createPost(newPost, newPost.owner._id, deletePostHandler, likePostHandler, prevewPost);
+      cardContainer.prepend(createdPost);
       closePopup(addPopupElement);
       evt.target.reset();
     })
@@ -85,10 +110,6 @@ function handleEditFormSubmit(evt) {
     .catch((err) => {
       console.log(err);
     });
-}
-
-function handleAddPopupOpen() {
-  openPopup(addPopupElement);
 }
 
 profileEditButton.addEventListener("click", () => {

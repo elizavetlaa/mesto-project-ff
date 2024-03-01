@@ -22,7 +22,12 @@
         <section class="profile page__section">
           <div
             class="profile__image"
-            style="background-image: url(<%=require('./images/avatar.jpg')%>)"></div>
+            style="background-image: url(<%=require('./images/avatar.jpg')%>)">
+            <button
+            class="profile__avatar-edit-button"
+            type="button"
+            aria-label="обновить аватар"></button>
+          </div>
           <div class="profile__info">
             <h1 class="profile__title">Жак-Ив Кусто</h1>
             <button
@@ -41,11 +46,43 @@
       <footer class="footer page__section">
         <p class="footer__copyright">© 2021 Mesto Russia</p>
       </footer>
+
+
+      <div class="popup popup_is-animated popup_is-opened">
+        <div class="popup__content popup_content_new-avatar">
+          <button
+            type="button"
+            class="popup__close"></button>
+          <h3 class="popup__title">Обновить аватар</h3>
+          <form
+            class="popup__form"
+            name="new avatar"
+            novalidate>
+            
+            <input
+              id="add-url-input"
+              type="url"
+              name="link"
+              class="popup__input popup__input_new_avatar_url"
+              placeholder="Ссылка на картинку"
+              required />
+            <span class="add-url-input-error form__input_error">Необходимо заполнить данное поле</span>
+            <button
+              type="submit"
+              class="button popup__button">
+              Сохранить
+            </button>
+          </form>
+        </div>
+      </div>
       <div class="popup popup_type_edit popup_is-animated">
         <div class="popup__content">
           <button
             type="button"
             class="popup__close"></button>
+
+
+
           <h3 class="popup__title">Редактировать профиль</h3>
           <form
             class="popup__form"
@@ -143,9 +180,12 @@
           class="card__delete-button"></button>
         <div class="card__description">
           <h2 class="card__title"></h2>
+          <div class="card__like">
           <button
             type="button"
             class="card__like-button"></button>
+            <span class="card__like-count">1</span>
+          </div>
         </div>
       </li>
     </template>
