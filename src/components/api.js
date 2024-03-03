@@ -26,8 +26,8 @@ export const getInitialPosts = () => {
 
 export const addPost = (name, link) => {
     return request(`${config.baseUrl}/cards`, 'POST', {
-        name: name,
-        link: link
+        name,
+        link
     })
 }
 

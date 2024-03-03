@@ -6,29 +6,35 @@ export function createPost(card, personId, handlePostDelete, handlePostLike, han
   const postTitle = postElement.querySelector(".card__title");
   const postDeleteButton = postElement.querySelector(".card__delete-button");
   const postLikeButton = postElement.querySelector(".card__like-button");
-  const postLikeCount = postElement.querySelector(".card__like-count");
+  const postLikeCountElement = postElement.querySelector(".card__like-count");
 
   postImage.src = card.link;
   postImage.alt = card.name;
   postTitle.textContent = card.name;
 
-  postElement.id = card._id;
+  const isLiked = card.likes.some((like) => like._id === personId)
 
-  if (card.likes.some((like) => like._id === personId)) {
-    postLikeButton.classList.toggle("card__like-button_is-active");
+  if (isLiked) {
+    toggleCardLike(postLikeButton)
   }
   if(card.owner._id === personId) {
-    postDeleteButton.classList.toggle("card__delete-button-visible")
+    postDeleteButton.classList.add("card__delete-button-visible")
   }
-  postLikeCount.textContent = card.likes.length;
+  postLikeCountElement.textContent = card.likes.length;
 
-  postDeleteButton.addEventListener("click", handlePostDelete);
-  postLikeButton.addEventListener("click", handlePostLike);
+  postDeleteButton.addEventListener("click", () => handlePostDelete(postElement, card._id));
+  postLikeButton.addEventListener("click", () => handlePostLike(
+    postLikeButton.classList.contains("card__like-button_is-active"), card._id, postLikeButton, postLikeCountElement)
+  );
   postImage.addEventListener("click", handlePostPreview);
 
   return postElement;
 }
 
-export function updateLikeCounter(evt, card) {
-  evt.target.closest(".card").querySelector(".card__like-count").textContent = card.likes.length
+export function updateLikeCounter(postLikeCountElement, count) {
+  postLikeCountElement.textContent = count;
+}
+
+export function toggleCardLike(postLikeButton) {
+  postLikeButton.classList.toggle("card__like-button_is-active");
 }
