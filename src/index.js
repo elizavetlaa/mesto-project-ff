@@ -16,10 +16,15 @@ import {
   imageDescriptionInput,
   imageUrlInput,
   addPopupElement,
+  editAvatarButton,
+  editAvatarPopup,
+  editAvatarForm,
+  avatarImage,
+  avatarUrlInput
 } from "./components/constants.js";
 
 import {validationSettings, enableValidation, clearValidation}  from "./components/validation.js";
-import {getInitialPosts, getPersonInfo, addPost, deletePost, editPersonInfo, addLike, deleteLike} from "./components/api.js";
+import {getInitialPosts, getPersonInfo, addPost, deletePost, editPersonInfo, addLike, deleteLike, updateAvatar} from "./components/api.js";
 
 const popupImagePreview = document.querySelector(".popup_type_image");
 const popupImage = popupImagePreview.querySelector(".popup__image");
@@ -76,9 +81,15 @@ function handleAddPopupOpen() {
   openPopup(addPopupElement);
 }
 
+function handleEditAvatarPopupOpen() {
+  openPopup(editAvatarPopup);
+}
+
 function handleAddFormSubmit(evt) {
   evt.preventDefault();
 
+  const addButton = addForm.querySelector(".popup__button");
+  addButton.textContent = "Сохранить..."
   addPost(imageDescriptionInput.value, imageUrlInput.value)
     .then((newPost) => {
       const createdPost = createPost(newPost, newPost.owner._id, deletePostHandler, likePostHandler, prevewPost);
@@ -88,6 +99,27 @@ function handleAddFormSubmit(evt) {
     })
     .catch((err) => {
       console.log(err);
+    })
+    .finally(() => {
+      addButton.textContent = "Сохранить"
+    });
+}
+
+function handleEditAvatarFormSubmit(evt) {
+  evt.preventDefault();
+  
+  const editButton = editAvatarForm.querySelector(".popup__button");
+  editButton.textContent = "Сохранить..."
+  updateAvatar(avatarUrlInput.value)
+    .then((avatar) => {
+      avatarImage.style.backgroundImage = `url(${avatar.avatar})`;
+      closePopup(editAvatarPopup);
+    })
+    .catch((err) => {
+      console.error(`Ошибка: ${err}`);
+    })
+    .finally(() => {
+      editButton.textContent = "Сохранить"
     });
 }
 
@@ -101,6 +133,8 @@ function handleEditPopupOpen() {
 function handleEditFormSubmit(evt) {
   evt.preventDefault();
 
+  const editButton = editForm.querySelector(".popup__button");
+  editButton.textContent = "Сохранить..."
   editPersonInfo(nameInput.value, descriptionInput.value)
     .then((newPersonInfo) => {
       profileTitle.textContent = newPersonInfo.name;
@@ -109,6 +143,9 @@ function handleEditFormSubmit(evt) {
     })
     .catch((err) => {
       console.log(err);
+    })
+    .finally(() => {
+      editButton.textContent = "Сохранить"
     });
 }
 
@@ -124,6 +161,10 @@ cardAddButton.addEventListener("click", () => {
   handleAddPopupOpen();
 });
 
+editAvatarButton.addEventListener("click", () => {
+  handleEditAvatarPopupOpen();
+});
+
 editForm.addEventListener("submit", evt => {
   handleEditFormSubmit(evt);
 });
@@ -132,12 +173,17 @@ addForm.addEventListener("submit", evt => {
   handleAddFormSubmit(evt);
 });
 
+editAvatarForm.addEventListener("submit", evt => {
+  handleEditAvatarFormSubmit(evt);
+})
+
 enableValidation(validationSettings);
 
 getPersonInfo()
   .then((personalInfo) => {
     profileTitle.textContent = personalInfo.name;
     profileDescription.textContent = personalInfo.about;
+    avatarImage.style.backgroundImage = `url(${personalInfo.avatar})`;
   })
   .catch((err) => {
     console.log(err);

@@ -18,6 +18,13 @@ const cardAddButton = document.querySelector(".profile__add-button");
 const imageUrlInput = document.querySelector(".popup__input_type_url");
 const imageDescriptionInput = document.querySelector(".popup__input_type_card-name");
 const addForm = document.forms.namedItem("new-place");
+// редактирование аватара
+const editAvatarButton = document.querySelector(".profile__avatar-edit-button");
+const editAvatarPopup = document.querySelector(".popup_type_edit-avatar");
+const avatarUrlInput = document.querySelector(".popup__input_new_avatar_url");
+const editAvatarForm = document.forms.namedItem("avatar");
+const avatarImage = document.querySelector(".profile__image");
+
 
 export {
   cardContainer,
@@ -34,4 +41,9 @@ export {
   imageUrlInput,
   imageDescriptionInput,
   addForm,
+  editAvatarButton,
+  editAvatarForm,
+  editAvatarPopup,
+  avatarImage,
+  avatarUrlInput
 };
