@@ -29,6 +29,6 @@ export function createPost(card, personId, handlePostDelete, handlePostLike, han
   return postElement;
 }
 
-export function likePost(evt) {
-  evt.target.classList.toggle("card__like-button_is-active");
+export function updateLikeCounter(evt, card) {
+  evt.target.closest(".card").querySelector(".card__like-count").textContent = card.likes.length
 }
