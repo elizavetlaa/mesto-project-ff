@@ -162,6 +162,21 @@ function updateSaveButtonState(isLoading, button) {
   }
 }
 
+function handleEditPopupOpen() {
+  openPopup(editPopupElement);
+  nameInput.value = profileTitle.textContent;
+  descriptionInput.value = profileDescription.textContent;
+  clearValidation(editPopupElement, validationSettings)
+}
+
+function handleAddPopupOpen() {
+  openPopup(addPopupElement);
+}
+
+function handleEditAvatarPopupOpen() {
+  openPopup(editAvatarPopup);
+}
+
 profileEditButton.addEventListener("click", () => {
   handleEditPopupOpen();
 });
@@ -185,21 +200,6 @@ addForm.addEventListener("submit", evt => {
 editAvatarForm.addEventListener("submit", evt => {
   handleEditAvatarFormSubmit(evt);
 });
-
-function handleEditPopupOpen() {
-  openPopup(editPopupElement);
-  nameInput.value = profileTitle.textContent;
-  descriptionInput.value = profileDescription.textContent;
-  clearValidation(editPopupElement, validationSettings)
-}
-
-function handleAddPopupOpen() {
-  openPopup(addPopupElement);
-}
-
-function handleEditAvatarPopupOpen() {
-  openPopup(editAvatarPopup);
-}
 
 popupsArray.forEach((popup) => {
   popup.addEventListener("click", handlePopupClick);
